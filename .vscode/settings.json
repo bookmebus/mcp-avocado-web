@@ -1,0 +1,28 @@
+{
+  // Use THIS project's uv virtualenv, so Pylance can see installed packages
+  // like `mcp` and offer them for auto-import.
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
+  // Offer "add import" completions for symbols you haven't imported yet.
+  // Type `MCPServer`, pick the suggestion, and Pylance inserts
+  // `from mcp.server.mcpserver import MCPServer` at the top for you.
+  "python.analysis.autoImportCompletions": true,
+
+  // Also surface auto-import suggestions in the "quick suggestions" popup.
+  "python.analysis.indexing": true,
+
+  // THE KEY SETTING for this SDK. By default Pylance only indexes third-party
+  // packages one submodule deep and skips most symbols, so `MCPServer` — which
+  // lives at `mcp.server.mcpserver` (two levels deep) — never shows up for
+  // auto-import. This indexes `mcp` deeply and includes every symbol, so typing
+  // `MCPServer` offers `from mcp.server.mcpserver import MCPServer`.
+  "python.analysis.packageIndexDepths": [
+    { "name": "mcp", "depth": 4, "includeAllSymbols": true }
+  ],
+
+  // A thorough type-check pass gives better, more complete suggestions.
+  "python.analysis.typeCheckingMode": "basic",
+
+  // Make `src/` a root so `import avocado_mcp` resolves for editing/tests too.
+  "python.analysis.extraPaths": ["src"]
+}

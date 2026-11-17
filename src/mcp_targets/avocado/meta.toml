@@ -1,0 +1,4 @@
+# Display metadata for the avocado target — plain text, NOT code. Overridable at
+# runtime with AVOCADO_DESCRIPTION / AVOCADO_SERVER_NAME.
+description = "BookMeBus core (Rails 4.2) — reservations, finance, …"
+server_name = "avocado-web"

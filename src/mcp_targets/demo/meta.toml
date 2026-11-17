@@ -1,0 +1,2 @@
+# Display metadata — plain text, NOT code. Overridable with DEMO_DESCRIPTION / DEMO_SERVER_NAME.
+description = "A minimal example target — copy it to start your own"

@@ -3,32 +3,54 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "avocado-mcp"
+name = "polymcp"
 dynamic = ["version"]
-description = "MCP server for the avocado-web (BookMeBus core) project."
+description = "Run many MCP servers from one shared core — each target a discoverable plugin with its own scoped, typed config."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
     "mcp[cli]>=1.2.0",
+    "pydantic>=2.14.3",
+    "python-dotenv>=1.2.4",
 ]
 
+# One launcher for ALL targets. `polymcp <target>` discovers the target
+# from mcp_targets/ and runs it on stdio; `polymcp --list` shows them.
+# Adding a target needs no change here — that's the point of the plugin model.
 [project.scripts]
-avocado-mcp = "avocado_mcp.server:main"
+polymcp = "mcp_core.cli:main"
 
-# Single source of truth for the version: read it from the package __init__.
-# pyproject does NOT hardcode a version, so it can never drift from code.
+# Distribution version = the shared core's __version__ (single source of truth for
+# the installable package). NOTE: each target server carries its OWN __version__
+# under mcp_targets/<target>/__init__.py — that is what its health tool reports.
 [tool.hatch.version]
-path = "src/avocado_mcp/__init__.py"
+path = "src/mcp_core/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/avocado_mcp"]
+packages = ["src/mcp_core", "src/mcp_targets"]
 
 [dependency-groups]
 dev = [
     "pytest>=8",
+    "ruff>=0.17.5",
 ]
 
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# E/W pycodestyle, F pyflakes, I import-sorting, UP pyupgrade, B bugbear.
+select = ["E", "W", "F", "I", "UP", "B"]
+
 [tool.pytest.ini_options]
+# Tests live under tests/, laid out to MIRROR src/ (tests/mcp_core/test_server.py
+# ↔ src/mcp_core/server.py), so each test maps to its module while staying out of
+# the package. `importlib` import mode lets same-named test files (several
+# `test_server.py` across the mirrored tree) coexist; `pythonpath = src` makes the
+# packages importable without an install step.
 testpaths = ["tests"]
-addopts = "-ra"
+pythonpath = ["src"]
+addopts = "-ra --import-mode=importlib"

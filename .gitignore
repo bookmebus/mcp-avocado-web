@@ -10,7 +10,20 @@ dist/
 # uv / venv
 .venv/
 
+# Secrets / local env — keep real env files out of git. Per-target files
+# (.env.avocado, .env.cm-market-server) and a shared .env are ignored; only the
+# *.example templates are committed.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
 # Editor / OS
 .DS_Store
 .idea/
-.vscode/
+
+# Ignore local VSCode state, but SHARE the project settings so the whole team
+# gets the right interpreter + auto-import behavior.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

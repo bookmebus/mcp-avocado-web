@@ -1,0 +1,9 @@
+{
+  // VSCode shows these as "recommended" when someone opens this folder.
+  // Both are required for the Python auto-import / IntelliSense described in
+  // DEVELOPING.md to work.
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ]
+}

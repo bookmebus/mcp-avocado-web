@@ -1,0 +1,4 @@
+# Display metadata — plain text, NOT code. Overridable with
+# CM_MARKET_SERVER_DESCRIPTION / CM_MARKET_SERVER_SERVER_NAME.
+description = "BookMe+ marketplace (Spree + spree_cm_commissioner)"
+# server_name omitted → defaults to the slug "cm-market-server"
